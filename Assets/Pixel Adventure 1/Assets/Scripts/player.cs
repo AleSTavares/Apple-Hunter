@@ -19,7 +19,7 @@ public class player : MonoBehaviour
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -33,7 +33,7 @@ public class player : MonoBehaviour
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
         transform.position += movement * Time.deltaTime * speed;
 
-        if(Input.GetAxis("Horizontal") > 0f)
+        if (Input.GetAxis("Horizontal") > 0f)
 
         {
             anim.SetBool("Walk", true);
@@ -65,41 +65,49 @@ public class player : MonoBehaviour
 
     void Jump()
     {
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
 
         {
 
-         if(!isJumping)
+            if (!isJumping)
             {
-            rig.AddForce(new Vector3(0f, JumpForce), ForceMode2D.Impulse);
+                rig.AddForce(new Vector3(0f, JumpForce), ForceMode2D.Impulse);
                 doubleJump = true;
                 anim.SetBool("jump", true);
             }
-                else
+            else
+            {
+                if (doubleJump)
                 {
-                if(doubleJump)
-                {
-              rig.AddForce(new Vector3(0f, JumpForce), ForceMode2D.Impulse);
+                    rig.AddForce(new Vector3(0f, JumpForce), ForceMode2D.Impulse);
                     doubleJump = false;
                 }
-              }
             }
-            
         }
+
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == 8) 
+        if (collision.gameObject.layer == 8)
 
         {
             isJumping = false;
             anim.SetBool("jump", false);
 
         }
+
+        if (collision.gameObject.tag == "Spikes")
+        
+        {
+            GameController.instance.ShowGameOver();
+            Destroy(gameObject);
+
+        }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-      if(collision.gameObject.layer == 8)
+        if(collision.gameObject.layer == 8)
 
         {
             isJumping = true;

@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - FallingPlatform
+  - Spikes
   layers:
   - Default
   - TransparentFX

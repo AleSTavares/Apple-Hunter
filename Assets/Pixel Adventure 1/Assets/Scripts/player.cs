@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
-
+    public static KeyCode KEY_JUMP;
+    public KeyCode key_jump;
     public float speed;
     public float JumpForce;
 
@@ -13,17 +14,25 @@ public class player : MonoBehaviour
 
     private Rigidbody2D rig;
     private Animator anim;
+
+    bool isBlowing;
+
     // Start is called before the first frame update
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        // = key_jump;
     }
 
+    void FixedUpdate()
+    {
+        move();
+    }
     // Update is called once per frame
     void Update()
     {
-        move();
+
         Jump();
 
     }
@@ -34,28 +43,24 @@ public class player : MonoBehaviour
         transform.position += movement * Time.deltaTime * speed;
 
         if (Input.GetAxis("Horizontal") > 0f)
-
         {
             anim.SetBool("Walk", true);
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
         }
 
         if (Input.GetAxis("Horizontal") < 0f)
-
         {
             anim.SetBool("Walk", true);
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
         }
 
         if (Input.GetAxis("Horizontal") < 0f)
-
         {
             anim.SetBool("Walk", true);
 
         }
 
         if (Input.GetAxis("Horizontal") == 0f)
-
         {
             anim.SetBool("Walk", false);
 
@@ -65,8 +70,7 @@ public class player : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
-
+        if (Input.GetKeyDown(key_jump) && !isBlowing)
         {
 
             if (!isJumping)
@@ -97,8 +101,16 @@ public class player : MonoBehaviour
         }
 
         if (collision.gameObject.tag == "Spikes")
-        
+
         {
+            GameController.instance.ShowGameOver();
+            Destroy(gameObject);
+
+        }
+
+        if (collision.gameObject.tag == "Saw")
+        {
+            print("chegou aqui");
             GameController.instance.ShowGameOver();
             Destroy(gameObject);
 
@@ -107,13 +119,28 @@ public class player : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == 8)
+        if (collision.gameObject.layer == 8)
 
         {
             isJumping = true;
         }
     }
+    void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            isBlowing = true;
+        }
+    }
+
+
+
+    void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Player")
+        {
+            isBlowing = false;
+        }
+    }
 
 }
-
-       

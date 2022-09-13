@@ -6,16 +6,18 @@ TagManager:
   tags:
   - FallingPlatform
   - Spikes
+  - Saw
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Blocks
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemy
+  - Ground
+  - Fan
   - 
   - 
   - 
